@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PassForge — Password Generator</title>
+
+    <link rel="icon" type="image/png" href="assets/Logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+
+            <img src="assets/Logo.png" alt="PassForge">
+
+            <span>
+                PassForge
+            </span>
+
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <section class="generator">
+
+            <h1>Password Generator</h1>
+
+            <p class="subtitle">
+                Generate or check a password instantly
+            </p>
+
+
+            <!-- PASSWORD LABEL -->
+
+            <div class="password-label-row">
+
+                <label for="password">
+                    Enter your password here
+                </label>
+
+                <span>
+                    You can edit it
+                </span>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="password-container" id="passwordContainer">
+
+                <input type="text" id="password" placeholder="Enter your password here" autocomplete="new-password"
+                    spellcheck="false" oninput="analyzePassword()">
+
+
+                <!-- VISIBILITY -->
+
+                <button class="icon-button" id="visibilityButton" onclick="togglePasswordVisibility()"
+                    title="Hide password" type="button">
+
+                    👁
+
+                </button>
+
+
+                <!-- COPY -->
+
+                <button class="icon-button copy-button" id="copyButton" onclick="copyPassword()" title="Copy password"
+                    type="button">
+
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1BU_0ENnMKv3g_dNp3G-Nk3mJJuwpcxgi9DsFXyD5Lw&s=10"
+                        alt="Copy">
+
+                </button>
+
+            </div>
+
+
+            <!-- STRENGTH -->
+
+            <div class="strength-section">
+
+                <div class="strength-track">
+
+                    <div id="strengthBar" class="strength-fill"></div>
+
+                </div>
+
+
+                <div class="strength-info">
+
+                    <strong id="strengthText">
+                        Enter a password
+                    </strong>
+
+                    <span id="scoreText">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="feedback" id="feedback"></div>
+
+            </div>
+
+
+            <!-- GENERATE + LENGTH -->
+
+            <div class="generate-area">
+
+                <button class="generate-button" id="generateButton" onclick="generatePassword()" type="button">
+                    Generate
+                </button>
+
+
+                <input class="length-input" id="passwordLength" type="text" inputmode="numeric" pattern="[0-9]*"
+                    maxlength="3" value="10" aria-label="Password length" title="Password length"
+                    oninput="handleLengthInput(this)" onblur="validateLength()">
+
+            </div>
+
+
+            <!-- OPTIONS -->
+
+            <div class="options">
+
+
+                <!-- PLATFORM ROW -->
+
+                <div class="platform-grid">
+
+
+                    <!-- INSTAGRAM -->
+
+                    <button class="option-button platform-button" data-platform="instagram"
+                        onclick="selectPlatform('instagram')" type="button">
+
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7g6s52v9CUHQrqC2jiAmW_F9qw2FQGqjbEacyNSkpPQ&s=10"
+                            alt="Instagram">
+
+                        <span>
+                            Instagram
+                        </span>
+
+                    </button>
+
+
+                    <!-- FACEBOOK -->
+
+                    <button class="option-button platform-button" data-platform="facebook"
+                        onclick="selectPlatform('facebook')" type="button">
+
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjmUvHck4ejf1Lg99_HEImTZnwtlCG9rLKolFWzHzJJg&s=10"
+                            alt="Facebook">
+
+                        <span>
+                            Facebook
+                        </span>
+
+                    </button>
+
+
+                    <!-- GMAIL -->
+
+                    <button class="option-button platform-button" data-platform="gmail"
+                        onclick="selectPlatform('gmail')" type="button">
+
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUXfUL28oZ5EfH8SYzjwtutOTCD9iQrU8rszuNXKtawg&s=10"
+                            alt="Gmail">
+
+                        <span>
+                            Gmail
+                        </span>
+
+                    </button>
+
+
+                    <!-- EASY TO REMEMBER -->
+
+                    <div class="easy-option" id="easyOption" role="button" tabindex="0" aria-pressed="false"
+                        onclick="handleEasyOptionClick(event)" onkeydown="handleEasyOptionKey(event)">
+
+                        <span>
+                            Easy to Remember
+                        </span>
+
+
+                        <label class="switch" onclick="event.stopPropagation()">
+
+                            <input type="checkbox" id="easyToggle" onchange="toggleEasyMode()">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD STYLE ROW -->
+
+                <div class="style-grid">
+
+                    <button class="option-button active" data-style="alphanumeric" onclick="selectStyle('alphanumeric')"
+                        type="button">
+                        🔢 Alphanumeric
+                    </button>
+
+
+                    <button class="option-button" data-style="letters" onclick="selectStyle('letters')" type="button">
+                        🔤 Letters Only
+                    </button>
+
+
+                    <button class="option-button" data-style="symbols" onclick="selectStyle('symbols')" type="button">
+                        🔐 Special Signs
+                    </button>
+
+
+                    <button class="option-button" data-style="strong" onclick="selectStyle('strong')" type="button">
+                        🛡 Strong & Human-Readable
+                    </button>
+
+
+                    <button class="option-button" data-style="story" onclick="selectStyle('story')" type="button">
+                        📖 Story Mode
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <span>
+            © 2026 PassForge
+        </span>
+
+        <div class="footer-links">
+
+            <a href="about.html">About</a>
+
+            <a href="privacy.html">
+                Privacy Policy
+            </a>
+
+            <a href="terms.html">
+                Terms
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
